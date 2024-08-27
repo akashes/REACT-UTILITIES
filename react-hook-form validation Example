@@ -1,0 +1,77 @@
+import React from 'react'
+import { useForm } from 'react-hook-form'
+const RegisterForm = () => {
+    const form = useForm({
+        defaultValues:{
+            // name:"",
+            email:"default@gmail.com",
+            // password:""
+        }
+    })
+    const {register,handleSubmit,formState,watch,reset}=form
+    const{errors,isDirty,isValid}=formState
+
+    const onSubmitForm=(data)=>{
+        console.log('form submitted')
+console.log(data)
+    }
+    const watchField = watch('name')
+  return (
+    <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}>
+        <form action="" onSubmit={handleSubmit(onSubmitForm)} noValidate>
+            <p>{watchField}</p>
+           <div className="form-group"><label htmlFor="     ">Name</label>
+           <input type="text" {...register('name',
+                {required:{
+                    value:true,
+                    message:"Name is required"
+                },
+                validate:(fieldValue)=>{
+                    return fieldValue!='admin' || "Enter another username"
+
+                }
+            }
+            )} />
+            {errors.name?.message}
+            </div>
+            <div className="form-group"><label htmlFor="">Email</label>
+            <input type="email"{...register('email',{
+                pattern:{
+                    value:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                    message:'Invalid email id'
+                    
+                },
+                    required:{
+                        value:true,
+                        message:"email is requried"
+                    }
+                
+            })} />
+                        {errors.email?.message}
+
+            </div>
+           <div className="form-group">
+            <label htmlFor="">password</label>
+            <input type="password" {...register('password',{
+                required:{
+                    value:true,
+                    message:'Password is required'
+                },
+                minLength:{
+                    value:3,
+                    message:"Password must be atleast 3 characters long"
+                }
+            })} />
+            {errors.password?.message}
+           </div>
+            <button disabled={!isDirty || !isValid} type="submit">submit</button>
+            <button onClick={()=>reset()} >reset</button>
+        </form>
+      
+    </div>
+  )
+}
+
+export default RegisterForm
+
+//form state management,form submission,custom validation
