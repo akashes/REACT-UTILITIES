@@ -1,0 +1,46 @@
+import axios from 'axios'
+import { useEffect,useState } from 'react'
+// axios.defaults.baseURL='https://opentdb.com'
+
+const useAxios=(url)=>{
+    console.log(url)
+
+    const[response,setResponse]=useState([])
+   const[error,setError]=useState("")
+   const[loading,setLoading]=useState(true)
+
+useEffect(()=>{
+    const fetchData=()=>{
+        
+        axios.get(url).then((result)=>{
+            console.log(result.data)
+            setResponse(result.data)
+    
+        }).catch((err)=>{
+            // if(err.response.status===429){
+            //     console.log('rate limit exceeded')
+            //     setError(err)
+            //     setTimeout(fetchData, 3000); // Retry after 3 seconds
+
+            // }else{
+
+            //     console.log(err)
+            //     setError(err)
+            // }
+            setError(error)
+        }).finally(()=>{
+            setLoading(false)
+        })
+
+    }
+    fetchData()
+   
+
+},[url])
+
+    return{
+        response,error,loading
+
+    }
+}
+export default useAxios
