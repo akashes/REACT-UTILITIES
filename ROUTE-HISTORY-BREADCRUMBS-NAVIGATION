@@ -1,0 +1,10 @@
+    const location = useLocation()
+    const paths = location.pathname.split('/').filter(Boolean)
+<nav>
+  {paths.map((path, idx) => (
+    <span key={idx}>
+      <Link to={`/${paths.slice(0, idx + 1).join('/')}`}>{path}</Link>
+      {idx < paths.length - 1 && ' > '}
+    </span>
+  ))}
+</nav>
