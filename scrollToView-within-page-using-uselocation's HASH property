@@ -1,0 +1,530 @@
+import React, { useEffect } from 'react'
+import { useLoaderData, useLocation, useNavigate } from 'react-router-dom'
+
+function toId(str) {
+  return str.toLowerCase().replace(/\s+/g, '-');
+}
+export async function countryLoader() {
+   return fetch('/countries.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok')
+            }
+            return response.json()
+        })
+        .then(data => {
+            return data
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error)
+        })
+}
+
+const Countries = () => {
+    const {hash} = useLocation()
+    const navigate = useNavigate()
+    console.log(location)
+    const[countries, setCountries] = React.useState([])
+    const data = useLoaderData()
+    React.useEffect(() => {
+        if (data) {
+            setCountries(data.countries)
+        }
+    }, [data])
+
+    useEffect(()=>{
+        if(hash){
+            console.log(hash)
+            const element = document.querySelector(hash.toLowerCase())
+            if(element){
+                element.scrollIntoView({ behavior: 'smooth' })
+            } else {
+                console.warn(`Element with id ${hash} not found`)
+            }
+
+        }
+
+    },[hash])
+
+  return (
+    <>
+    <div style={{position: 'fixed', top: 0, left: 0, width:'300px', height:'auto', backgroundColor: '#f8f9fa', padding: '10px', zIndex: 1000}}>
+        <ul style={{display:'flex',flexWrap:'wrap',gap:'10px',listStyleType: 'none', padding: 0}}>
+            {
+                countries.map((country) => (
+                    <li onClick={()=>navigate( `#${toId(country.name)}`)} style={{background:'#007bff',color:'#fff',padding:'5px',borderRadius:'10px',cursor:'pointer'}} key={country.id}>{toId(country.name)}</li>
+                ))
+            }
+        </ul>
+    </div>
+    <div>
+        {
+            countries.length > 0 ? (
+                <ul style={{listStyleType: 'none', padding: 0,marginLeft:'300px'}}>
+                    {countries.map((country) => (
+                        <li key={country.id} id={toId(country.name)} style={{border: '1px solid #ccc', padding: '10px', marginBottom: '10px'}}>
+                            <h2>{country.name}</h2>
+                            <p>Code: {country.code}</p>
+                            <p>Capital: {country.capital}</p>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No countries available</p>
+            )
+        }
+    </div>
+    </>
+  )
+}
+
+export default Countries
+
+
+
+{
+    "countries":[
+        {
+            "id":1,
+            "name":"United States",
+            "capital":"Washington, D.C.",
+            "population":331002651,
+            "area":9833517,
+            "region":"Americas",
+            "subregion":"Northern America",
+            "languages":["English"],
+            "currencies":[
+                {
+                    "code":"USD",
+                    "name":"United States Dollar",
+                    "symbol":"$"
+                }
+            ]
+        },
+        {
+            "id":2,
+            "name":"United Kingdom",
+            "capital":"London",
+            "population":67886011,
+            "area":243610,
+            "region":"Europe",
+            "subregion":"Northern Europe",
+            "languages":["English"],
+            "currencies":[
+                {
+                    "code":"GBP",
+                    "name":"British Pound",
+                    "symbol":"£"
+                }
+            ]
+        },
+        {
+            "id":3,
+            "name":"Canada",
+            "capital":"Ottawa",
+            "population":37742154,
+            "area":9984670,
+            "region":"Americas",
+            "subregion":"Northern America",
+            "languages":["English", "French"],
+            "currencies":[
+                {
+                    "code":"CAD",
+                    "name":"Canadian Dollar",
+                    "symbol":"$"
+                }
+            ]
+        },
+        {
+            "id":4,
+            "name":"Australia",
+            "capital":"Canberra",
+            "population":25499884,
+            "area":7692024,
+            "region":"Oceania",
+            "subregion":"Australia and New Zealand",
+            "languages":["English"],
+            "currencies":[
+                {
+                    "code":"AUD",
+                    "name":"Australian Dollar",
+                    "symbol":"$"
+                }
+            ]
+        },
+        {
+            "id":5,
+            "name":"India",
+            "capital":"New Delhi",
+            "population":1380004385,
+            "area":3287263,
+            "region":"Asia",
+            "subregion":"Southern Asia",
+            "languages":["Hindi", "English"],
+            "currencies":[
+                {
+                    "code":"INR",
+                    "name":"Indian Rupee",
+                    "symbol":"₹"
+                }
+            ]
+        },
+        {
+            "id":6,
+            "name":"Brazil",
+            "capital":"Brasília",
+            "population":212559409,
+            "area":8515767,
+            "region":"Americas",
+            "subregion":"South America",
+            "languages":["Portuguese"],
+            "currencies":[
+                {
+                    "code":"BRL",
+                    "name":"Brazilian Real",
+                    "symbol":"R$"
+                }
+            ]
+        },
+        {
+            "id":7,
+            "name":"Germany",
+            "capital":"Berlin",
+            "population":83783942,
+            "area":357114,
+            "region":"Europe",
+            "subregion":"Western Europe",
+            "languages":["German"],
+            "currencies":[
+                {
+                    "code":"EUR",
+                    "name":"Euro",
+                    "symbol":"€"
+                }
+            ]
+        },
+        {
+            "id":8,
+            "name":"France",
+            "capital":"Paris",
+            "population":65273511,
+            "area":640679,
+            "region":"Europe",
+            "subregion":"Western Europe",
+            "languages":["French"],
+            "currencies":[
+                {
+                    "code":"EUR",
+                    "name":"Euro",
+                    "symbol":"€"
+                }
+            ]
+        },
+        {
+            "id":9,
+            "name":"Japan",
+            "capital":"Tokyo",
+            "population":126476461,
+            "area":377973,
+            "region":"Asia",
+            "subregion":"Eastern Asia",
+            "languages":["Japanese"],
+            "currencies":[
+                {
+                    "code":"JPY",
+                    "name":"Japanese Yen",
+                    "symbol":"¥"
+                }
+            ]
+        },
+        {
+            "id":10,
+            "name":"South Africa",
+            "capital":"Pretoria",
+            "population":59308690,
+            "area":1219090,
+            "region":"Africa",
+            "subregion":"Southern Africa",
+            "languages":["Afrikaans", "English", "Zulu", "Xhosa"],
+            "currencies":[
+                {
+                    "code":"ZAR",
+                    "name":"South African Rand",
+                    "symbol":"R"
+                }
+            ]
+        },
+        {
+            "id":11,
+            "name":"Russia",
+            "capital":"Moscow",
+            "population":145912025,
+            "area":17098242,
+            "region":"Europe",
+            "subregion":"Eastern Europe",
+            "languages":["Russian"],
+            "currencies":[
+                {
+                    "code":"RUB",
+                    "name":"Russian Ruble",
+                    "symbol":"₽"
+                }
+            ]
+        },
+        {
+            "id":12,
+            "name":"China",
+            "capital":"Beijing",
+            "population":1439323776,
+            "area":9596961,
+            "region":"Asia",
+            "subregion":"Eastern Asia",
+            "languages":["Chinese"],
+            "currencies":[
+                {
+                    "code":"CNY",
+                    "name":"Chinese Yuan Renminbi",
+                    "symbol":"¥"
+                }
+            ]
+        },
+        {
+            "id":13,
+            "name":"United States",
+            "capital":"Washington, D.C.",
+            "population":331449281,
+            "area":9826675,
+            "region":"Americas",
+            "subregion":"Northern America",
+            "languages":["English"],
+            "currencies":[
+                {
+                    "code":"USD",
+                    "name":"United States Dollar",
+                    "symbol":"$"
+                }
+            ]
+        },
+        {
+            "id":14,
+            "name":"Mexico",
+            "capital":"Mexico City",
+            "population":128932753,
+            "area":1964375,
+            "region":"Americas",
+            "subregion":"Central America",
+            "languages":["Spanish"],
+            "currencies":[
+                {
+                    "code":"MXN",
+                    "name":"Mexican Peso",
+                    "symbol":"$"
+                }
+            ]
+        },
+        {
+            "id":15,
+            "name":"Italy",
+            "capital":"Rome",
+            "population":60244639,
+            "area":301340,
+            "region":"Europe",
+            "subregion":"Southern Europe",
+            "languages":["Italian"],
+            "currencies":[
+                {
+                    "code":"EUR",
+                    "name":"Euro",
+                    "symbol":"€"
+                }
+            ]
+        },
+        {
+            "id":16,
+            "name":"Nigeria",
+            "capital":"Abuja",
+            "population":206139589,
+            "area":923768,
+            "region":"Africa",
+            "subregion":"Western Africa",
+            "languages":["English"],
+            "currencies":[
+                {
+                    "code":"NGN",
+                    "name":"Nigerian Naira",
+                    "symbol":"₦"
+                }
+            ]
+        },
+        {
+            "id":17,
+            "name":"Brazil",
+            "capital":"Brasilia",
+            "population":212559409,
+            "area":8515767,
+            "region":"Americas",
+            "subregion":"South America",
+            "languages":["Portuguese"],
+            "currencies":[
+                {
+                    "code":"BRL",
+                    "name":"Brazilian Real",
+                    "symbol":"R$"
+                }
+            ]
+        },
+        {
+            "id":18,
+            "name":"Germany",
+            "capital":"Berlin",
+            "population":83783942,
+            "area":357114,
+            "region":"Europe",
+            "subregion":"Western Europe",
+            "languages":["German"],
+            "currencies":[
+                {
+                    "code":"EUR",
+                    "name":"Euro",
+                    "symbol":"€"
+                }
+            ]
+        },
+        {
+            "id":19,
+            "name":"France",
+            "capital":"Paris",
+            "population":65273511,
+            "area":640679,
+            "region":"Europe",
+            "subregion":"Western Europe",
+            "languages":["French"],
+            "currencies":[
+                {
+                    "code":"EUR",
+                    "name":"Euro",
+                    "symbol":"€"
+                }
+            ]
+        },
+        {
+            "id":20,
+            "name":"Japan",
+            "capital":"Tokyo",
+            "population":126476461,
+            "area":377973,
+            "region":"Asia",
+            "subregion":"Eastern Asia",
+            "languages":["Japanese"],
+            "currencies":[
+                {
+                    "code":"JPY",
+                    "name":"Japanese Yen",
+                    "symbol":"¥"
+                }
+            ]
+        },
+        {
+            "id":21,
+            "name":"South Africa",
+            "capital":"Pretoria",
+            "population":59308690,
+            "area":1219090,
+            "region":"Africa",
+            "subregion":"Southern Africa",
+            "languages":["Afrikaans", "English", "Zulu", "Xhosa"],
+            "currencies":[
+                {
+                    "code":"ZAR",
+                    "name":"South African Rand",
+                    "symbol":"R"
+                }
+            ]
+        },
+        {
+            "id":22,
+            "name":"Russia",
+            "capital":"Moscow",
+            "population":145912025,
+            "area":17098242,
+            "region":"Europe",
+            "subregion":"Eastern Europe",
+            "languages":["Russian"],
+            "currencies":[
+                {
+                    "code":"RUB",
+                    "name":"Russian Ruble",
+                    "symbol":"₽"
+                }
+            ]
+        },
+        {
+            "id":23,
+            "name":"China",
+            "capital":"Beijing",
+            "population":1439323776,
+            "area":9596961,
+            "region":"Asia",
+            "subregion":"Eastern Asia",
+            "languages":["Chinese"],
+            "currencies":[
+                {
+                    "code":"CNY",
+                    "name":"Chinese Yuan Renminbi",
+                    "symbol":"¥"
+                }
+            ]
+        },
+        {
+            "id":24,
+            "name":"United States",
+            "capital":"Washington, D.C.",
+            "population":331449281,
+            "area":9826675,
+            "region":"Americas",
+            "subregion":"Northern America",
+            "languages":["English"],
+            "currencies":[
+                {
+                    "code":"USD",
+                    "name":"United States Dollar",
+                    "symbol":"$"
+                }
+            ]
+        },
+        {
+            "id":25,
+            "name":"Mexico",
+            "capital":"Mexico City",
+            "population":128932753,
+            "area":1964375,
+            "region":"Americas",
+            "subregion":"Central America",
+            "languages":["Spanish"],
+            "currencies":[
+                {
+                    "code":"MXN",
+                    "name":"Mexican Peso",
+                    "symbol":"$"
+                }
+            ]
+        },
+        {
+            "id":26,
+            "name":"Italy",
+            "capital":"Rome",
+            "population":60244639,
+            "area":301340,
+            "region":"Europe",
+            "subregion":"Southern Europe",
+            "languages":["Italian"],
+            "currencies":[
+                {
+                    "code":"EUR",
+                    "name":"Euro",
+                    "symbol":"€"
+                }
+            ]
+        }
+    ]
+}
