@@ -36,3 +36,57 @@ const Modal = ({children,open,close}) => {
 }
 
 export default Modal
+
+
+
+
+
+
+
+
+import React, { useEffect, useRef } from 'react'
+import ReactDOM from 'react-dom'
+
+const Modal = ({ children, open, close }) => {
+  if (!open) return null
+  let modalRef = useRef(null)
+    const handleOverlayClick = (e) => {
+        console.log(modalRef.current)
+        console.log(e.target)
+        console.log('inside handle overlay')
+    // Close only if the user clicked *outside* the modal content
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      close()
+    }
+  }
+
+  useEffect(() => {
+  const handleEsc = (e) => {
+    if (e.key === 'Escape') close()
+  }
+  document.addEventListener('keydown', handleEsc)
+  return () => document.removeEventListener('keydown', handleEsc)
+}, [])
+console.log(modalRef)
+  return ReactDOM.createPortal(
+    <>
+      {/* Overlay */}
+      <div onClick={handleOverlayClick} className="fixed inset-0 bg-opacity-50 z-50" />
+
+      {/* Modal content */}
+      <div ref={modalRef} className="fixed top-0 left-0 right-0   bg-white p-5 z-50 rounded shadow-lg">
+        {children}
+        <button
+          className="mt-4 border px-4 py-2 bg-red-300 hover:bg-red-400 transition"
+          onClick={close}
+        >
+          Close
+        </button>
+      </div>
+    </>,
+    document.getElementById('root-node')
+  )
+}
+
+export default Modal
+
