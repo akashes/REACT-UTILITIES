@@ -1,0 +1,63 @@
+import React, { useState } from "react"
+
+const itemHeight = 30
+const windowHeight = 500
+const overscan = 10
+const totalItems = 1000
+
+const List = () => {
+  const [scrollTop, setScrollTop] = useState(0)
+
+  const startIndex = Math.max(
+    0,
+    Math.floor(scrollTop / itemHeight) - overscan
+  )
+  const endIndex = Math.min(
+    totalItems,
+    Math.floor((scrollTop + windowHeight) / itemHeight) + overscan
+  )
+
+  const generateRows = () => {
+    let items = []
+    for (let i = startIndex; i < endIndex; i++) {
+      items.push(<ListItem key={i} index={i} />)
+    }
+    return items
+  }
+
+  return (
+    <div
+      style={{
+        height: windowHeight,
+        overflowY: "scroll",
+        border: "2px solid black",
+        position: "relative"
+      }}
+      onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
+    >
+      {/* Spacer div sets correct total scroll height */}
+      <div style={{ height: `${totalItems * itemHeight}px`, position: "relative" }}>
+        {generateRows()}
+      </div>
+    </div>
+  )
+}
+
+const ListItem = ({ index }) => {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: `${itemHeight * index}px`,
+        height: `${itemHeight}px`,
+        width: "100%",
+        backgroundColor: index % 2 === 0 ? "#f0f0f0" : "#ffffff",
+        textAlign: "center"
+      }}
+    >
+      list item index - {index}
+    </div>
+  )
+}
+
+export default List
