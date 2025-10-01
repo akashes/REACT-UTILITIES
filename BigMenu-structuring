@@ -3,7 +3,7 @@ import { RiMenu2Fill } from "react-icons/ri";
 import { LiaAngleDownSolid } from "react-icons/lia";
 import { Link } from "react-router-dom";
 import { GoRocket } from "react-icons/go";
-
+ 
 
 import CategoryPanel from "./CategoryPanel";
 import { useEffect, useState } from "react";
